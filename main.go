@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"go-template/bootstrap"
+)
+
 
 func main() {
-	fmt.Println("init")
+	app := bootstrap.InitApp()
+	app.Run()
 }
