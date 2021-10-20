@@ -1,0 +1,38 @@
+{
+  "app": {
+    "app_name": "lw-shop-api",
+    "http_listen": "0.0.0.0:3000",
+    "run_mode": "debug",
+    "app_mode": "dev",
+    "app_url": "127.0.0.1",
+    "timezone": "PRC",
+    "version": "1.0.0"
+  },
+  "mysql": {
+    "dsn": "root:loginmysql@tcp(mysql:3306)/lw-shop?charset=utf8mb4&parseTime=True&loc=Local",
+    "maxIdleConn": 10,
+    "maxOpenConn": 100,
+    "connMaxLifetime": 6,
+    "prefix": "royal_"
+  },
+  "redis": {
+    "db": 0,
+    "addr": "redis:6379",
+    "pwd": "loginredis123.",
+    "poolSize": 5,
+    "maxRetries": 3,
+    "idleTimeout": 1000
+  },
+  "mongo": {
+    "dsn": "mongodb://root:xthk123456@192.168.3.100:32335/?authSource=admin",
+    "minPoolSize": 10,
+    "maxPoolSize": 100
+  },
+  "es": {
+    "addr": [
+      "http://es:32491"
+    ],
+    "user": "",
+    "pwd": ""
+  }
+}
