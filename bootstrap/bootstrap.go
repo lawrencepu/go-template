@@ -7,6 +7,7 @@ import (
 	"go-template/app/models/redis"
 	"go-template/config"
 	"go-template/routes"
+	"go-template/tools"
 	"time"
 )
 
@@ -20,6 +21,7 @@ func InitApp() *App {
 	app := new(App)
 	app.RegisterConfig("./config/app.json")
 	app.Timezone()
+	app.InitLogger()
 	app.RegisterWebServer()
 	app.RegisterDB()
 	app.RegisterMiddleware()
@@ -71,7 +73,13 @@ func (app *App) Run() {
 	app.WebServer.Run(app.BaseConfig.HttpListen)
 }
 
+// sql/nosql初始化
 func (app *App) RegisterDB() {
 	mysql.Init()
 	redis.Init()
+}
+
+// 日志格式初始化
+func (app *App) InitLogger() {
+	tools.InitLogger()
 }

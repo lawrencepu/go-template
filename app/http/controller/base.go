@@ -48,4 +48,6 @@ func (ctrl *BaseController) Ready(c *gin.Context) {
 		c.AbortWithError(http.StatusInternalServerError, err)
 	}
 
+	ctrl.Success(c, "ok")
+
 }

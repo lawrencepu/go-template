@@ -12,7 +12,8 @@
     "dsn": "root:loginmysql@tcp(mysql:3306)/lw-shop?charset=utf8mb4&parseTime=True&loc=Local",
     "maxIdleConn": 10,
     "maxOpenConn": 100,
-    "connMaxLifetime": 6
+    "connMaxLifetime": 6,
+    "prefix": "royal_"
   },
   "redis": {
     "db": 0,

@@ -2,8 +2,11 @@ package mysql
 
 import (
 	"go-template/config"
+	"go-template/tools"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"gorm.io/gorm/schema"
 	"log"
 	"time"
 )
@@ -19,19 +22,31 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
-	DB = InitDB(dbConfig.MaxIdleConn, dbConfig.MaxOpenConn, dbConfig.ConnMaxLifetime, dbConfig.Dsn)
+	DB = InitDB(dbConfig.MaxIdleConn, dbConfig.MaxOpenConn, dbConfig.ConnMaxLifetime, dbConfig.Dsn, dbConfig.Prefix)
 }
 
 
 
 // init db
-func InitDB(maxIdleConn, maxOpenConn, connMaxLifetime int, dsn string) *gorm.DB {
-	return mysqlConn(maxIdleConn, maxOpenConn, connMaxLifetime, dsn)
+func InitDB(maxIdleConn, maxOpenConn, connMaxLifetime int, dsn string, prefix string) *gorm.DB {
+	return mysqlConn(maxIdleConn, maxOpenConn, connMaxLifetime, dsn, prefix)
 }
 
 // init mysql pool
-func mysqlConn(maxIdleConn, maxOpenConn, connMaxLifetime int, dsn string) *gorm.DB {
-	DB, err := gorm.Open(mysql.Open(dsn))
+func mysqlConn(maxIdleConn, maxOpenConn, connMaxLifetime int, dsn string, prefix string) *gorm.DB {
+	l := logger.New(tools.Logger, logger.Config{
+		//慢SQL阈值
+		SlowThreshold: time.Millisecond,
+		//设置日志级别，只有Warn以上才会打印sql
+		LogLevel:      logger.Info,
+	})
+	DB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		NamingStrategy: schema.NamingStrategy{
+			TablePrefix: prefix,
+			SingularTable: true,
+		},
+		Logger: l,
+	})
 	if err != nil {
 		log.Printf("[db] mysql fail, err=%s", err)
 		panic(err)

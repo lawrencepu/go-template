@@ -15,7 +15,6 @@ type Config struct {
 	BaseConf BaseConf `json:"app"`
 	DBConf   DBConf   `json:"mysql"`
 	RdbConf  RdbConf  `json:"redis"`
-	MdbConf  MdbConf  `json:"mongo"`
 	EsConf   EsConf   `json:"es"`
 }
 
@@ -37,6 +36,7 @@ type (
 		MaxIdleConn     int    `json:"maxIdleConn"`     //空闲连接数
 		MaxOpenConn     int    `json:"maxOpenConn"`     //最大连接数
 		ConnMaxLifetime int    `json:"connMaxLifetime"` //连接时长
+		Prefix string    `json:"prefix"` //表前缀
 	}
 	RdbConf struct {
 		DB          int    `json:"db"`          //默认连接库
@@ -45,11 +45,6 @@ type (
 		IdleTimeout int    `json:"idleTimeout"` //空闲链接超时时间(单位：time.Second)
 		Addr        string `json:"addr"`        //DSN
 		Pwd         string `json:"pwd"`         //密码
-	}
-	MdbConf struct {
-		DSN         string `json:"dsn"`         //dsn
-		MinPoolSize uint64 `json:"minPoolSize"` //连接池最小连接数
-		MaxPoolSize uint64 `json:"maxPoolSize"` //连接池最大连接数
 	}
 	EsConf struct {
 		Addr []string `json:"addr"`
@@ -114,18 +109,6 @@ func GetRdbConf(k string) (*RdbConf, error) {
 	return &rdbc, nil
 }
 
-func GetMdbConf(k string) (*MdbConf, error) {
-	var mdbc = MdbConf{}
-	raw, ok := mc[k]
-	if !ok {
-		return nil, errors.New("config not found")
-	}
-	err := json.Unmarshal(raw, &mdbc)
-	if err != nil {
-		return nil, err
-	}
-	return &mdbc, nil
-}
 func GetEsConf(k string) (*EsConf, error) {
 	var esc = EsConf{}
 	raw, ok := mc[k]

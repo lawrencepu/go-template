@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"github.com/gin-gonic/gin"
 	"github.com/go-basic/uuid"
-	"github.com/sirupsen/logrus"
 	"go-template/tools"
 	"io/ioutil"
 )
@@ -21,14 +20,10 @@ func RequestTrace(c *gin.Context) {
 
 // 初始化日志 打印请求参数,设置日志request id
 func SetLog(c *gin.Context)  {
-	// 日期格式设置
-	logrus.SetFormatter(&logrus.JSONFormatter{
-		TimestampFormat: "2006-01-02 15:04:05",
-	})
 	requestId := c.GetHeader("request_id")
-	logrus.AddHook(tools.NewLogHook(requestId))
+	tools.Logger.AddHook(tools.NewLogHook(requestId))
 	requestData, _ := c.GetRawData()
 	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(requestData))
-	logrus.Info(string(requestData))
+	tools.Logger.Info(string(requestData))
 	c.Next()
 }
