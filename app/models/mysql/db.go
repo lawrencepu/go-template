@@ -25,8 +25,6 @@ func Init() {
 	DB = InitDB(dbConfig.MaxIdleConn, dbConfig.MaxOpenConn, dbConfig.ConnMaxLifetime, dbConfig.Dsn, dbConfig.Prefix)
 }
 
-
-
 // init db
 func InitDB(maxIdleConn, maxOpenConn, connMaxLifetime int, dsn string, prefix string) *gorm.DB {
 	return mysqlConn(maxIdleConn, maxOpenConn, connMaxLifetime, dsn, prefix)
@@ -36,17 +34,20 @@ func InitDB(maxIdleConn, maxOpenConn, connMaxLifetime int, dsn string, prefix st
 func mysqlConn(maxIdleConn, maxOpenConn, connMaxLifetime int, dsn string, prefix string) *gorm.DB {
 	l := logger.New(tools.Logger, logger.Config{
 		//慢SQL阈值
-		SlowThreshold: time.Millisecond,
+		SlowThreshold: time.Second,
+		IgnoreRecordNotFoundError: true,
+		Colorful: false,
 		//设置日志级别，只有Warn以上才会打印sql
-		LogLevel:      logger.Info,
+		LogLevel: logger.Info,
 	})
 	DB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
-			TablePrefix: prefix,
+			TablePrefix:   prefix,
 			SingularTable: true,
 		},
 		Logger: l,
 	})
+
 	if err != nil {
 		log.Printf("[db] mysql fail, err=%s", err)
 		panic(err)

@@ -8,4 +8,7 @@ import (
 func Register(r *gin.Engine) {
 	r.GET("/ready", controller.Ctrl.Ready)
 	r.GET("/version", controller.Ctrl.Version)
+
+	// 用户相关路由注册
+	MemberRouter(r)
 }

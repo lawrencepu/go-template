@@ -36,7 +36,7 @@ type (
 		MaxIdleConn     int    `json:"maxIdleConn"`     //空闲连接数
 		MaxOpenConn     int    `json:"maxOpenConn"`     //最大连接数
 		ConnMaxLifetime int    `json:"connMaxLifetime"` //连接时长
-		Prefix string    `json:"prefix"` //表前缀
+		Prefix 			string `json:"prefix"` //表前缀
 	}
 	RdbConf struct {
 		DB          int    `json:"db"`          //默认连接库
