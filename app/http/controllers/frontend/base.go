@@ -1,11 +1,11 @@
 package frontend
 
 import (
-	controller2 "go-template/app/http/controller"
+	"go-template/app/http/controllers"
 )
 
 var Ctrl = &controller{}
 
 type controller struct {
-	controller2.BaseController
+	controllers.BaseController
 }

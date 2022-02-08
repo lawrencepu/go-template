@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-template/app/http/controller/frontend"
+	"go-template/app/http/controllers/frontend"
 )
 
 func MemberRouter(r *gin.Engine)  {
